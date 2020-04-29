@@ -1,7 +1,6 @@
 ## A Data Visualization of NYTimes Best Seller Titles
 
-## Dataset
-[New York Times Hardcover Fiction Best Sellers](https://www.kaggle.com/cmenca/new-york-times-hardcover-fiction-best-sellers
+**Dataset:** [New York Times Hardcover Fiction Best Sellers](https://www.kaggle.com/cmenca/new-york-times-hardcover-fiction-best-sellers
 )
 
 ## Helper Code
