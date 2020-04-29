@@ -22,15 +22,19 @@ function getData (callback) {
 // push titles to new array and filter out duplicates
 // convert each individual word to a string and push it to a new array
 function getTitles (parsed_JSON) {
-  let globalData = parsed_JSON
   let titleArray = []
+  let uniqueWords = []
   parsed_JSON.map((item, index) => {
     titleArray.indexOf(item.title) == -1 ? titleArray.push(item.title) : null
   })
+  let splitText = titleArray.join(" ").split(" ")
 
-//   console.log(titleArray)
+//   splitText.map(())
+//   splitText.indexOf()
 
-//   const map = titleArray.reduce(
+  console.log(splitText)
+
+//   const map = splitText.reduce(
 //     (acc, e) => acc.set(e, (acc.get(e) || 0) + 1),
 //     new Map()
 //   )
@@ -39,7 +43,7 @@ function getTitles (parsed_JSON) {
 //   console.info([...map.entries()])
 
 
-const counts = titleArray.reduce(
+const counts = splitText.reduce(
   (acc, value) => ({
     ...acc,
     [value]: (acc[value] || 0) + 1
@@ -55,4 +59,5 @@ console.log(counts)
 init()
 
 // to do:
-// separate each word in the title into a string and push that to a new array
+// 1. remove punctuation
+// 2. remove articles (?)
