@@ -1,3 +1,5 @@
+// USE LO - DASH! https://lodash.com/
+
 function init () {
   getData(function (response) {
     let parsed_JSON = JSON.parse(response)
@@ -16,12 +18,11 @@ function getData (callback) {
       callback(data.responseText)
     }
   }
-    data.send(null)
+  data.send(null)
 }
 
 function buildD3 (parsed_JSON) {
   // set the dimensions and margins of the graph
-  // console.log(parsed_JSON)
   var width = 450
   var height = 450
 
@@ -48,7 +49,7 @@ function buildD3 (parsed_JSON) {
   var node = svg
     .append('g')
     .selectAll('circle')
-    .data(parsed_JSON)
+    .data(parsed_JSON.children)
     .enter()
     .append('circle')
     .attr('r', 25)
@@ -89,7 +90,6 @@ function buildD3 (parsed_JSON) {
   // Apply these forces to the nodes and update their positions.
   // Once the force algorithm is happy with positions ('alpha' value is low enough), simulations will stop.
   simulation.nodes(parsed_JSON.children).on('tick', function (d) {
-    console.log(d)
     node
       .attr('cx', function (d) {
         return d.x
