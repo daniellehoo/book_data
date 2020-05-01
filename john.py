@@ -30,5 +30,10 @@ uses_per_word = words_series.value_counts()
 #     json.dump(uses_per_word.to_dict(), f)  # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.to_dict.html
 
 expanded = uses_per_word.reset_index()
-expanded.columns = ['count', 'word']
+expanded.columns = ['word', 'count']
 expanded.to_json('d3_ready.json', orient='records')  # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_dict.html
+
+
+# Could compare similar descriptions: https://github.com/google-research/bert
+
+# larger set: http://www.cs.cmu.edu/~dbamman/booksummaries.html 16559 books and their wikipedia descriptions
