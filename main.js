@@ -1,5 +1,3 @@
-// USE LO - DASH! https://lodash.com/
-
 function init () {
   getData(function (response) {
     let parsed_JSON = JSON.parse(response)
@@ -23,15 +21,24 @@ function getData (callback) {
 
 function buildD3 (parsed_JSON) {
   // set the dimensions and margins of the graph
-  var width = 450
-  var height = 450
+  var width = window.innerWidth
+  var height = window.innerHeight
+
+  // decalare globals
+  let diameter = 600
+  let color = d3.scaleOrdinal(d3.schemeCategory20)
+  let bubble = d3
+    .pack(parsed_JSON)
+    .size([width, height])
+    .padding(1.5)
 
   // append the svg object to the body of the page
   var svg = d3
-    .select('#my_dataviz')
+    .select('body')
     .append('svg')
     .attr('width', width)
     .attr('height', height)
+    .attr('class', 'bubble')
 
   // create dummy data -> just one element per circle
   // var data = [
@@ -45,27 +52,93 @@ function buildD3 (parsed_JSON) {
   //   { name: 'H' }
   // ]
 
+  let nodes = d3.hierarchy(parsed_JSON).sum(function (d) {
+    return d.count
+  })
+
   // Initialize the circle: all located at the center of the svg area
   var node = svg
-    .append('g')
-    .selectAll('circle')
-    .data(parsed_JSON.children)
+    .selectAll('.node')
+    .data(bubble(nodes).descendants())
     .enter()
+    .filter(function (d) {
+      return !d.children
+    })
+    .append('g')
+    .attr('class', 'node')
+    .attr('transform', function (d) {
+      return 'translate(' + d.x + ',' + d.y + ')'
+    })
+
+  node.append('title').text(function (d) {
+    return d.data.word + ': ' + d.data.count
+  })
+
+  node
     .append('circle')
-    .attr('r', 25)
-    .attr('cx', width / 2)
-    .attr('cy', height / 2)
-    .style('fill', '#19d3a2')
-    .style('fill-opacity', 0.3)
-    .attr('stroke', '#b3a2c8')
-    .style('stroke-width', 4)
-    .call(
-      d3
-        .drag() // call specific function when circle is dragged
-        .on('start', dragstarted)
-        .on('drag', dragged)
-        .on('end', dragended)
-    )
+    .attr('r', function (d) {
+      return d.r
+    })
+    .style('fill', function (d, i) {
+      return color(i)
+    })
+
+  node
+    .append('text')
+    .attr('dy', '.2em')
+    .style('text-anchor', 'middle')
+    .text(function (d) {
+      return d.data.word.substring(0, d.r / 3)
+    })
+    .attr('font-family', 'sans-serif')
+    .attr('font-size', function (d) {
+      return d.r / 5
+    })
+    .attr('fill', 'white')
+
+  node
+    .append('text')
+    .attr('dy', '1.3em')
+    .style('text-anchor', 'middle')
+    .text(function (d) {
+      return d.data.count
+    })
+    .attr('font-family', 'Gill Sans', 'Gill Sans MT')
+    .attr('font-size', function (d) {
+      return d.r / 5
+    })
+    .attr('fill', 'white')
+
+  node.call(
+    d3
+      .drag() // call specific function when circle is dragged
+      .on('start', dragstarted)
+      .on('drag', dragged)
+      .on('end', dragended)
+  )
+
+  d3.select(self.frameElement).style('height', diameter + 'px')
+
+  // var node = svg
+  //   .selectAll('.node')
+  //   .data(bubble(nodes).descendents())
+  //   .append('g')
+  //   .enter()
+  //   .append('circle')
+  //   .attr('r', 25)
+  //   .attr('cx', width / 2)
+  //   .attr('cy', height / 2)
+  //   .style('fill', '#19d3a2')
+  //   .style('fill-opacity', 0.3)
+  //   .attr('stroke', '#b3a2c8')
+  //   .style('stroke-width', 4)
+  //   .call(
+  //     d3
+  //       .drag() // call specific function when circle is dragged
+  //       .on('start', dragstarted)
+  //       .on('drag', dragged)
+  //       .on('end', dragended)
+  //   )
 
   // Features of the forces applied to the nodes:
   var simulation = d3
@@ -89,7 +162,7 @@ function buildD3 (parsed_JSON) {
 
   // Apply these forces to the nodes and update their positions.
   // Once the force algorithm is happy with positions ('alpha' value is low enough), simulations will stop.
-  simulation.nodes(parsed_JSON.children).on('tick', function (d) {
+  simulation.nodes(parsed_JSON).on('tick', function (d) {
     node
       .attr('cx', function (d) {
         return d.x
