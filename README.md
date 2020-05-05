@@ -12,3 +12,4 @@
 * https://bl.ocks.org/john-guerra/0d81ccfd24578d5d563c55e785b3b40a
 * https://bl.ocks.org/alokkshukla/raw/3d6be4be0ef9f6977ec6718b2916d168/
 * https://bl.ocks.org/alokkshukla/3d6be4be0ef9f6977ec6718b2916d168
+* https://observablehq.com/@johnhaldeman/tutorial-on-d3-basics-and-circle-packing-heirarchical-bubb
