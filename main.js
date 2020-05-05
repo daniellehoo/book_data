@@ -2,7 +2,7 @@ function init () {
   getData(function (response) {
     let parsed_JSON = JSON.parse(response)
     console.log(parsed_JSON)
-    buildD3(parsed_JSON)
+    buildD3(parsed_JSON.children)
   })
 }
 
@@ -31,6 +31,7 @@ function buildD3 (parsed_JSON) {
     .pack(parsed_JSON)
     .size([width, height])
     .padding(1.5)
+
 
   // append the svg object to the body of the page
   var svg = d3
@@ -188,6 +189,44 @@ function buildD3 (parsed_JSON) {
     d.fy = null
   }
 }
+
+function handleMouseOver (d, i) {
+  // Add interactivity
+  console.log('hover')
+  // Use D3 to select element, change color and size
+  d3.select('circle').attr({
+    fill: 'orange',
+    r: radius * 2
+  })
+
+  // Specify where to put label of text
+  svg
+    .append('text')
+    .attr({
+      id: 't' + d.x + '-' + d.y + '-' + i, // Create an id for text so we can select it later for removing on mouseout
+      x: function () {
+        return xScale(d.x) - 30
+      },
+      y: function () {
+        return yScale(d.y) - 15
+      }
+    })
+    .text(function () {
+      return [d.x, d.y] // Value of the text
+    })
+}
+
+function handleMouseOut (d, i) {
+  // Use D3 to select element, change color back to normal
+  d3.select(this).attr({
+    fill: 'black',
+    r: radius
+  })
+
+  // Select text by id and then remove
+  d3.select('#t' + d.x + '-' + d.y + '-' + i).remove() // Remove text location
+}
+
 
 // var diameter = 600
 // var color = d3.scaleOrdinal(d3.schemeCategory20)
