@@ -22,7 +22,7 @@ function getData (callback) {
 function buildD3 (parsed_JSON) {
   // set the dimensions and margins of the graph
   var width = window.innerWidth
-  var height = window.innerHeight
+  var height = window.innerHeight * .90
 
   // decalare globals
   let diameter = 600
