@@ -3,5 +3,32 @@
 } */
 
 h1 {
-    font-family: "Arial";
+  font-family: "DM Mono", monospace;
+
+  font-size: 1rem;
+}
+
+h2 {
+  font-family: "DM Mono", monospace;
+
+  font-size: 1rem;
+  margin-top: 0;
+}
+
+a {
+  color: #dad128;
+  text-decoration: none;
+  margin-top: 0;
+}
+
+a:hover {
+  border-bottom: 2px solid #dad128;
+}
+
+.text-wrapper {
+  display: flex;
+  flex-direction: column;
+  /* transform: rotate(-90deg); */
+  justify-content: flex-start;
+  align-items: flex-start;
 }
