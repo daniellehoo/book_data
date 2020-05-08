@@ -1,7 +1,6 @@
 function init () {
   getData(function (response) {
     let parsed_JSON = JSON.parse(response)
-    console.log(parsed_JSON)
     buildD3(parsed_JSON)
   })
 }
@@ -33,7 +32,7 @@ function buildD3 (parsed_JSON) {
     .padding(1.5)
 
   // append the svg object to the body of the page
-  var svg = d3
+  let svg = d3
     .select('body')
     .append('svg')
     .attr('width', width)
